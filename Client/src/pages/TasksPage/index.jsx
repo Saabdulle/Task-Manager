@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { TaskForm } from "../../components";
-import { TaskList } from "../../components";
+import { TaskCard, TaskForm } from "../../components";
 
-function TasksPage() {
+export default function TasksPage() {
   const [tasks, setTasks] = useState([]);
 
   const addTask = (task) => {
@@ -13,9 +12,6 @@ function TasksPage() {
     <div>
       <h1>Tasks Page</h1>
       <TaskForm addTask={addTask} />
-      <TaskList tasks={tasks} addTask={addTask} />
     </div>
   );
 }
-
-export default TasksPage;

@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskList } from "../../components";
+import { TaskCard } from "../../components";
 export default function Tasks() {
-  return <TaskList />;
+  return <TaskCard />;
 }

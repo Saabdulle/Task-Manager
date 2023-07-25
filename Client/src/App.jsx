@@ -50,10 +50,11 @@ function App() {
       <Routes>
         <Route path="/" element={<NavBar />}>
           <Route index element={<Pages.HomePage />} />
-          <Route path="/tasks" element={Pages.Tasks} />
+          <Route path="/tasks" element={<Pages.Tasks />} />
           {/* <Route path="/tasks:id" element={Pages.TasksList} /> */}
-          <Route path="/search" element={Pages.SearchTask} />
-          <Route path="*" element={Pages.NotFound} />
+          <Route path="/create" element={<Pages.TasksPage />} />
+          <Route path="/search" element={<Pages.SearchTask />} />
+          <Route path="*" element={<Pages.NotFound />} />
         </Route>
       </Routes>
     </>
