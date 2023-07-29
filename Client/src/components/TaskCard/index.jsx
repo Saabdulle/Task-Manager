@@ -1,42 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-function TaskCard() {
-  const [tasks, setTasks] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  const fetchTasks = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/tasks");
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
-      }
-      const data = await response.json();
-      setTasks(data);
-    } catch (error) {
-      setError(error.message);
-    }
+function TaskCard({ task, handleDelete }) {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <div>
-      <h1>Task List</h1>
-      <ul>
-        {tasks.map((task) => (
-          <li key={task._id}>
-            <h3>{task.title}</h3>
-            <p>{task.description}</p>
-            <p>{task.createdAt}</p>
-          </li>
-        ))}
-      </ul>
+      {task ? (
+        <>
+          <h3>{task.title}</h3>
+          <p>{task.description}</p>
+          <p>{formatDate(task.createdAt)}</p>
+          <button onClick={() => handleDelete(task._id)}>Delete</button>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }

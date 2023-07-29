@@ -14,7 +14,7 @@ export default function NavBar() {
                 <NavLink to="/tasks">Tasks</NavLink>
               </li>
               <li>
-                <NavLink to="/create">Search</NavLink>
+                <NavLink to="/create">Create</NavLink>
               </li>
             </ul>
           </div>

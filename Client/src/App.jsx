@@ -53,7 +53,6 @@ function App() {
           <Route path="/tasks" element={<Pages.Tasks />} />
           {/* <Route path="/tasks:id" element={Pages.TasksList} /> */}
           <Route path="/create" element={<Pages.TasksPage />} />
-          <Route path="/search" element={<Pages.SearchTask />} />
           <Route path="*" element={<Pages.NotFound />} />
         </Route>
       </Routes>
