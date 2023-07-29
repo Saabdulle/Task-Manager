@@ -6,7 +6,7 @@ const taskRouter = Router()
 
 // Routes
 taskRouter.get('/', taskController.index);
-taskRouter.post('/', taskController.create);
+taskRouter.post('/', taskController.createTask);
 taskRouter.get("/:id", taskController.show)
 taskRouter.delete("/:id", taskController.destroy)
 taskRouter.patch("/:id", taskController.updateTask);
