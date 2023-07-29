@@ -26,15 +26,21 @@ const show = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+const createTask = async (req, res) => {
   try {
-    const data = await Task.create(req.body);
-    res.status(201).json(data);
+    const data = req.body; // Get the task data from the request body
+
+    // Add the createdAt field with the current date in ISO 8601 format
+    data.createdAt = new Date().toISOString();
+
+    const newTask = await Task.create(data); // Call the create method in your Task model
+    res.status(201).json(newTask);
   } catch (error) {
     console.error("Error creating task:", error);
-    res.status(500).json({ error: "Error creating task" });
+    res.status(500).json({ error: "Failed to create task" });
   }
 };
+
 
 const destroy = async (req, res) => {
   const id = req.params.id;
@@ -80,4 +86,4 @@ async function updateTask(req, res) {
   }
 }
 
-module.exports = { index, show, create, destroy, updateTask };
+module.exports = { index, show, createTask, destroy, updateTask };

@@ -1,243 +1,77 @@
-// import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-// export default function TaskForm({ addTask }) {
-//   const [title, setTitle] = useState("");
-//   const [description, setDescription] = useState("");
-//   const [createdAt, setCreatedAt] = useState("");
+const TaskForm = () => {
+  const [tasks, setTasks] = useState([]);
+  const [formData, setFormData] = useState({ title: "", description: "" });
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const task = {
-//       id: Date.now(),
-//       title,
-//       description,
-//       createdAt,
-//     };
-//     addTask(task);
-//     setTitle("");
-//     setDescription("");
-//     setCreatedAt("");
-//   };
+  const handleInputChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
 
-//   return (
-//     <div>
-//       <h2>Create Task</h2>
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           Title:
-//           <input
-//             type="text"
-//             value={title}
-//             onChange={(e) => setTitle(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <label>
-//           Description:
-//           <textarea
-//             value={description}
-//             onChange={(e) => setDescription(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <label>
-//           Created At:
-//           <input
-//             type="text"
-//             value={createdAt}
-//             onChange={(e) => setCreatedAt(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <button type="submit">Add Task</button>
-//       </form>
-//     </div>
-//   );
-// }
-// frontend/components/TaskForm.jsx
-
-// import React, { useState } from "react";
-
-// export default function TaskForm({ addTask }) {
-//   const [title, setTitle] = useState("");
-//   const [description, setDescription] = useState("");
-//   const [createdAt, setCreatedAt] = useState("");
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const task = {
-//       title,
-//       description,
-//       createdAt: Date.now(),
-//     };
-//     addTask(task);
-//     setTitle("");
-//     setDescription("");
-//     setCreatedAt("");
-//   };
-
-//   return (
-//     <div>
-//       <h2>Create Task</h2>
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           Title:
-//           <input
-//             type="text"
-//             value={title}
-//             onChange={(e) => setTitle(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <label>
-//           Description:
-//           <textarea
-//             value={description}
-//             onChange={(e) => setDescription(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <button type="submit">Add Task</button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// import React, { useState } from "react";
-
-// export default function TaskForm({ addTask }) {
-//   const [title, setTitle] = useState("");
-//   const [description, setDescription] = useState("");
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const task = {
-//       title,
-//       description,
-//       createdAt: new Date().toISOString().slice(0, 10), // Format date to "YYYY-MM-DD"
-//     };
-
-//     try {
-//       const response = await fetch("http://localhost:3000/tasks", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(task),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error("Failed to create task");
-//       }
-
-//       const data = await response.json();
-//       addTask(data); // Update the state with the new task received from the server
-//       setTitle("");
-//       setDescription("");
-//     } catch (error) {
-//       console.error("Error creating task:", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Create Task</h2>
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           Title:
-//           <input
-//             type="text"
-//             value={title}
-//             onChange={(e) => setTitle(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <label>
-//           Description:
-//           <textarea
-//             value={description}
-//             onChange={(e) => setDescription(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <button type="submit">Add Task</button>
-//       </form>
-//     </div>
-//   );
-// }
-import React, { useState } from "react";
-
-export default function TaskForm({ addTask, editTask }) {
-  const [title, setTitle] = useState(editTask ? editTask.title : "");
-  const [description, setDescription] = useState(
-    editTask ? editTask.description : ""
-  );
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const task = {
-      title,
-      description,
-    };
-
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      let response;
-      if (editTask) {
-        // If editTask is defined, we are editing an existing task
-        response = await fetch(`http://localhost:3000/tasks/${editTask._id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        });
-      } else {
-        // If editTask is not defined, we are creating a new task
-        response = await fetch("http://localhost:3000/tasks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        });
-      }
-
-      if (!response.ok) {
-        throw new Error("Failed to create or edit task");
-      }
-
-      const data = await response.json();
-      addTask(data); // Update the state with the new/edited task received from the server
-      setTitle("");
-      setDescription("");
+      const response = await axios.post(
+        "http://localhost:3000/tasks",
+        formData
+      );
+      const newTask = response.data;
+      setTasks([...tasks, newTask]);
+      setFormData({ title: "", description: "" });
     } catch (error) {
-      console.error("Error creating or editing task:", error);
+      console.error("Error creating task:", error);
     }
   };
 
+  useEffect(() => {
+    async function fetchTasks() {
+      try {
+        const response = await axios.get("http://localhost:3000/tasks");
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    }
+    fetchTasks();
+  }, []);
+
   return (
     <div>
-      <h2>{editTask ? "Edit Task" : "Create Task"}</h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          Title:
+        <div>
+          <label htmlFor="title">Title:</label>
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
           />
-        </label>
-        <br />
-        <label>
-          Description:
+        </div>
+        <div>
+          <label htmlFor="description">Description:</label>
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
           />
-        </label>
-        <br />
-        <button type="submit">{editTask ? "Save Changes" : "Add Task"}</button>
+        </div>
+        <button type="submit">Create Task</button>
       </form>
+
+      <h2>Existing Tasks:</h2>
+      <ul>
+        {tasks.map((task) => (
+          <li key={task._id}>
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
+
+export default TaskForm;
