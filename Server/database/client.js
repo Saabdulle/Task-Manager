@@ -1,6 +1,13 @@
+require('dotenv').config(); // Load environment variables from .env
+
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = process.env.DB_URI
 
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const uri = process.env.DB_URI;
 
-module.exports = client
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
+});
+
+module.exports = client;
