@@ -69,10 +69,6 @@ To run the Task Manager App on your local machine, follow these steps:
 
 Contributions to the Task Manager App are welcome. If you find any bugs or have suggestions for improvement, please create an issue or submit a pull request.
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - This project was inspired by the need for an efficient task management application.
