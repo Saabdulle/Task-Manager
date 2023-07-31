@@ -77,5 +77,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - This project was inspired by the need for an efficient task management application.
 - Thanks to the developers and contributors of the libraries and tools used in this project.
-
-Feel free to customize this README to fit your project's specific details and requirements.
